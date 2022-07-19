@@ -151,13 +151,13 @@ class AccountController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users,'.$id,
+                'email' => 'required|string|email|max:255|unique:users,email,'.$id,
                 'password' => 'required|string|min:8'
             ]);
 
             if ($validator->fails()) {
                 $errors = $validator->errors();
-                $response->errors = $errors->all();
+                $response->errors = $errors->toArray();
                 $response->message = "Can't create mew account";
                 return response()->json($response, 422);
             }
