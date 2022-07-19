@@ -48,7 +48,7 @@ class AuthService
         // If validation fails
         if ($validator->fails()) {
             $errors = $validator->errors();
-            $response->errors = $errors->all();
+            $response->errors = $errors->toArray();
             $response->message = "Invalid email or password";
             return response()->json($response, 422);
         }
@@ -60,10 +60,10 @@ class AuthService
         $loginAttempt = Auth::guard($this->guard)->attempt($credentials, $remember);
         if (!$loginAttempt) {
             $response->message = "Invalid email or password";
-            return response()->json($response, 401);
+            return response()->json($response, 422);
         }
 
-        // Create token 
+        // Create token
         $user = auth($this->guard)->user();
         $response->token = $user->createToken('auth_token')->plainTextToken;
         $response->user = $user;
@@ -102,7 +102,7 @@ class AuthService
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            $response->errors = $errors->all();
+            $response->errors = $errors->toArray();
             $response->message = "Can't create mew account";
             return response()->json($response, 422);
         }
