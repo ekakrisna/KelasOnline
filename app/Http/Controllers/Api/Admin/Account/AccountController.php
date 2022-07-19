@@ -83,7 +83,7 @@ class AccountController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
@@ -134,7 +134,7 @@ class AccountController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
+                'email' => 'required|string|email|max:255|unique:users,'.$id,
                 'password' => 'required|string|min:8'
             ]);
 

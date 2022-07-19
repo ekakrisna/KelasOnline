@@ -83,7 +83,24 @@ class AccountController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8'
+        ]);
+
+        $user = new User();
+
+        $user->fill([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ]);
+        $user->save();
+
+        return response()->json([
+            'data' => $user
+        ]);
     }
 
     /**
@@ -134,7 +151,7 @@ class AccountController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
+                'email' => 'required|string|email|max:255|unique:users,'.$id,
                 'password' => 'required|string|min:8'
             ]);
 
