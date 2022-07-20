@@ -103,7 +103,7 @@ class AuthService
         if ($validator->fails()) {
             $errors = $validator->errors();
             $response->errors = $errors->toArray();
-            $response->message = "Can't create mew account";
+            $response->message = "Can't create new account";
             return response()->json($response, 422);
         }
 
@@ -131,9 +131,10 @@ class AuthService
         $response->user = null;
         $response->role = null;
 
-        $user = auth($this->guard)->user();
+        $user = auth()->user();
         $token = $user->tokens()->delete();
-        $auth = Auth::guard($this->guard)->logout();
+        // $auth = Auth::guard($this->guard)->logout();
+        $response->status = $token;
 
         return response()->json($response, 200);
     }
